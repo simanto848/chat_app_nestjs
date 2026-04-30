@@ -42,6 +42,9 @@ cp .env.example .env
 | Variable | Description | Demo/Default Value |
 | :--- | :--- | :--- |
 | `DATABASE_URL` | PostgreSQL connection string | `postgresql://chatuser:chatpassword@localhost:5432/chatdb` |
+| `POSTGRES_USER` | PostgreSQL username | `chatuser` |
+| `POSTGRES_PASSWORD` | PostgreSQL password | `chatpassword` |
+| `POSTGRES_DB` | PostgreSQL database name | `chatdb` |
 | `REDIS_HOST` | Hostname for Redis | `localhost` |
 | `REDIS_PORT` | Port for Redis | `6379` |
 | `SESSION_EXPIRY_SECONDS` | Token expiration time | `86400` (24 hours) |
