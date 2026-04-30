@@ -25,8 +25,8 @@ A real-time group chat service built with NestJS, PostgreSQL, Drizzle ORM, and R
 ### 1. Clone the Repository
 
 ```bash
-git clone <repo-url>
-cd chat-app
+git clone https://github.com/simanto848/chat_app_nestjs.git
+cd chat_app_nestjs
 ```
 
 ### 2. Environment Setup
