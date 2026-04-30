@@ -2,67 +2,118 @@
 
 A real-time group chat service built with NestJS, PostgreSQL, Drizzle ORM, and Redis.
 
+## Features
+
+- **Anonymous Login**: Start chatting instantly with just a username.
+- **Real-time Communication**: Group chat rooms powered by Socket.io.
+- **Message History**: Paginated chat history stored in PostgreSQL.
+- **High Performance**: Redis used for WebSocket adapter and pub/sub.
+- **API Documentation**: Interactive Swagger UI.
+
+---
+
 ## Prerequisites
 
-- Node.js (v18+)
-- Docker and Docker Compose
+- **Node.js**: v18 or higher
+- **Docker & Docker Compose**: For running PostgreSQL and Redis
+- **npm**: Package manager
 
-## Quick Start
+---
 
-1. **Clone the repository**
-   ```bash
-   git clone <repo-url>
-   cd chat-app
-   ```
+## Getting Started
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+### 1. Clone the Repository
 
-3. **Start infrastructure**
-   ```bash
-   docker-compose up -d
-   ```
+```bash
+git clone <repo-url>
+cd chat-app
+```
 
-4. **Run migrations**
-   ```bash
-   npx drizzle-kit push
-   ```
+### 2. Environment Setup
 
-5. **Start the application**
-   ```bash
-   npm run start:dev
-   ```
+Create a `.env` file in the root directory and configure your environment variables. You can use the provided `.env.example` as a template:
 
-The API will be available at `http://localhost:3000/api/v1`.
+```bash
+cp .env.example .env
+```
 
-## API Documentation
+#### Demo Environment Variables
 
-- **POST /login**: `{"username": "string"}` - Returns session token.
-- **GET /rooms**: List all rooms.
-- **POST /rooms**: `{"name": "string"}` - Create a room.
-- **GET /rooms/:id**: Get room details.
-- **DELETE /rooms/:id**: Delete a room (Creator only).
-- **GET /rooms/:id/messages**: Paginated history.
-- **POST /rooms/:id/messages**: `{"content": "string"}` - Send message.
+| Variable | Description | Demo/Default Value |
+| :--- | :--- | :--- |
+| `DATABASE_URL` | PostgreSQL connection string | `postgresql://chatuser:chatpassword@localhost:5432/chatdb` |
+| `REDIS_HOST` | Hostname for Redis | `localhost` |
+| `REDIS_PORT` | Port for Redis | `6379` |
+| `SESSION_EXPIRY_SECONDS` | Token expiration time | `86400` (24 hours) |
+| `PORT` | Application port | `3000` |
 
-## WebSocket
+### 3. Start Infrastructure
 
-Connect to `ws://localhost:3000/chat` with:
-- `token`: Session token
-- `roomId`: Target room ID
+Use Docker Compose to spin up the required PostgreSQL and Redis instances:
 
-### Events
-- `room:joined`: Current active users.
-- `room:user_joined`: Notification of new user.
-- `message:new`: New message broadcast.
-- `room:user_left`: Notification of user leaving.
-- `room:deleted`: Room closed notification.
+```bash
+docker-compose up -d
+```
+
+### 4. Install Dependencies
+
+```bash
+npm install
+```
+
+### 5. Database Migrations
+
+Push the schema to your database using Drizzle Kit:
+
+```bash
+npx drizzle-kit push
+```
+
+### 6. Run the Application
+
+```bash
+# Development mode
+npm run start:dev
+
+# Production mode
+npm run build
+npm run start:prod
+```
+
+---
+
+## API & Documentation
+
+### Swagger Documentation
+The API documentation is available via Swagger UI. Once the application is running, you can access it at:
+
+👉 **[http://localhost:3000/api/v1/docs](http://localhost:3000/api/v1/docs)**
+
+This interactive documentation allows you to test the API endpoints directly from your browser.
+
+### Key Endpoints
+- **POST `/api/v1/login`**: Login with a username to get a session token.
+- **GET `/api/v1/rooms`**: List all available chat rooms.
+- **POST `/api/v1/rooms`**: Create a new chat room.
+- **GET `/api/v1/rooms/:id/messages`**: Fetch message history for a room.
+
+---
+
+## WebSocket Interface
+
+Connect to the WebSocket server at `ws://localhost:3000/chat`.
+
+### Authentication
+Include the following in your connection handshake:
+- `token`: The session token obtained from the login endpoint.
+- `roomId`: The ID of the room you wish to join.
+
+---
 
 ## Tech Stack
 
-- **Framework**: NestJS
-- **Database**: PostgreSQL + Drizzle ORM
-- **Cache/PubSub**: Redis
-- **Real-time**: Socket.io
+- **Framework**: [NestJS](https://nestjs.com/)
+- **Database**: [PostgreSQL](https://www.postgresql.org/)
+- **ORM**: [Drizzle ORM](https://orm.drizzle.team/)
+- **Cache/PubSub**: [Redis](https://redis.io/)
+- **Real-time**: [Socket.io](https://socket.io/)
